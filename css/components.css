@@ -1,0 +1,83 @@
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+::-webkit-scrollbar-button {
+  width: 0px;
+  height: 0px;
+}
+::-webkit-scrollbar-thumb {
+  background: #e1e1e1;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #ffffff;
+}
+
+::-webkit-scrollbar-track {
+  background: #66666676;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+::-webkit-scrollbar-track:hover {
+  background: #66666676;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+.button {
+  min-width: 80px;
+  padding: 10px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 5px auto;
+  transition: all 0.7s ease;
+  border-radius: 20px;
+  background: #991b1b;
+  box-shadow: 6px 6px 12px #851717, -6px -6px 12px #ad1f1f;
+}
+
+.button:hover {
+  border-radius: 20px;
+  background: #991b1b;
+  box-shadow: inset 6px 6px 12px #851717, inset -6px -6px 12px #ad1f1f;
+}
+
+.inactive {
+  padding: 10px;
+  color: #fff;
+  cursor: not-allowed;
+  font-size: 16px;
+  margin: 5px auto;
+  border-radius: 20px;
+  background: #991b1b;
+  box-shadow: inset 6px 6px 12px #851717, inset -6px -6px 12px #ad1f1f;
+}
+
+.card {
+  border-radius: 30px;
+  background: #991b1b;
+  box-shadow: 9px 9px 18px #8d1919, -9px -9px 18px #a51d1d;
+  padding: 30px;
+}
+
+.inner-card {
+  border-radius: 30px;
+  background: #991b1b;
+  box-shadow: inset 9px 9px 18px #8d1919, inset -9px -9px 18px #a51d1d;
+}
+
+.tbl > tbody > tr > th {
+  text-align: right;
+  padding: 2px 12px;
+}
+
+.badge {
+  border-radius: 60px;
+  background: #991b1b;
+  box-shadow: inset 6px 6px 12px #851717, inset -6px -6px 12px #ad1f1f;
+}
