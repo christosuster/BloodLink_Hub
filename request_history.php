@@ -19,8 +19,6 @@ if ($result && mysqli_num_rows($result) > 0) {
     while ($donorRow = mysqli_fetch_assoc($result)) {
         array_push($donors, $donorRow);
     }
-} else {
-    header("Location:error.php?error=Invalid Request");
 }
 
 
