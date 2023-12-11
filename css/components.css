@@ -39,6 +39,7 @@
   border-radius: 20px;
   background: #991b1b;
   box-shadow: 6px 6px 12px #851717, -6px -6px 12px #ad1f1f;
+  /* box-shadow: 5px 5px 10px #851717, -5px -5px 10px #ad1f1f; */
 }
 
 .button:hover {

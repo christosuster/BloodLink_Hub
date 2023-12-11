@@ -14,7 +14,7 @@ if ($result && mysqli_num_rows($result) > 0) {
     $userInfo = mysqli_fetch_array($result);
 }
 
-$sql = "SELECT * FROM donationrequest WHERE `CreatedBy` = '$username' AND `ExpiryDate` > NOW() ORDER BY `CreatedOn` DESC";
+$sql = "SELECT * FROM donationrequest WHERE `CreatedBy` = '$username' ORDER BY `CreatedOn` DESC";
 $result = mysqli_query($con, $sql);
 $donations = array();
 if ($result && mysqli_num_rows($result) > 0) {
@@ -43,6 +43,17 @@ if ($result && mysqli_num_rows($result) > 0) {
         array_push($donationApplication, $row);
     }
 }
+
+$sql = "select * from donationhistory where Username = '$username'";
+$result = mysqli_query($con, $sql);
+$donationHistory = array();
+if ($result && mysqli_num_rows($result) > 0) {
+
+    while ($row = mysqli_fetch_assoc($result)) {
+        array_push($donationHistory, $row);
+    }
+}
+
 
 ?>
 
@@ -123,30 +134,24 @@ if ($result && mysqli_num_rows($result) > 0) {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>2023-02-05</td>
-                        <td>Platelets</td>
-                        <td>300 ml</td>
-                        <td>Regional Medical Center</td>
-                    </tr>
-                    <tr>
-                        <td>2023-01-15</td>
-                        <td>Whole Blood</td>
-                        <td>450 ml</td>
-                        <td>City General Hospital</td>
-                    </tr>
-                    <tr>
-                        <td>2023-03-20</td>
-                        <td>Plasma</td>
-                        <td>200 ml</td>
-                        <td>Community Health Center</td>
-                    </tr>
-                    <tr>
-                        <td>2023-04-10</td>
-                        <td>Red Cells</td>
-                        <td>500 ml</td>
-                        <td>University Hospital</td>
-                    </tr>
+
+                    <?php foreach ($donationHistory as $history): ?>
+                        <tr>
+                            <td>
+                                <?php echo $history['DonationDate']; ?>
+                            </td>
+                            <td>
+                                <?php echo $history['DonationType']; ?>
+                            </td>
+                            <td>
+                                <?php echo $history['DonationAmount']; ?>
+                            </td>
+                            <td>
+                                <?php echo $history['HospitalName']; ?>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+
                 </tbody>
             </table>
         </div>

@@ -12,6 +12,10 @@ $username = $_SESSION['username'];
 $raw_id = base64_decode($_GET['id']);
 $id = preg_replace(sprintf('/%s/', 'salt'), '', $raw_id);
 
+$raw_request = base64_decode($_GET['request']);
+$request = preg_replace(sprintf('/%s/', 'salt'), '', $raw_request);
+
+
 
 $sql = "SELECT * FROM users WHERE Username = '$id'";
 $result = mysqli_query($con, $sql);
@@ -47,6 +51,14 @@ if ($result && mysqli_num_rows($result) > 0) {
         'Malaria' => 'N/A',
         'TB' => 'N/A'
     );
+}
+
+$sql = "SELECT * FROM donationhistory WHERE Username = '$id' AND DonationRequestID = '$request'";
+$result = mysqli_query($con, $sql);
+if ($result && mysqli_num_rows($result) == 1) {
+    $alreadyConfirmed = true;
+} else {
+    $alreadyConfirmed = false;
 }
 
 
@@ -183,7 +195,34 @@ if ($result && mysqli_num_rows($result) > 0) {
             </table>
         </div>
     </div>
+    <?php if (!$alreadyConfirmed): ?>
+        <div class="col-span-3 flex justify-center">
+            <form target="frame" action="classes/confirm_donation.php" method="post">
+                <input type="hidden" name="request" value=<?php echo $request; ?>>
+                <input type="hidden" name="id" value=<?php echo $id; ?>>
+                <button class="button" name="submit" type="submit" id="confirmDonationButton">
+                    Confirm Donation
+                </button>
+            </form>
+
+        </div>
+    <?php endif; ?>
+
 </div>
+
+<script>
+
+    const confirmButton = document.getElementById('confirmDonationButton');
+
+    confirmButton.addEventListener('click', () => {
+        confirmButton.innerHTML = "Donation Confirmed";
+        confirmButton.classList.add('hidden');
+
+
+    })
+
+
+</script>
 
 
 

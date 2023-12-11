@@ -14,16 +14,23 @@ $sql = "SELECT * FROM users INNER JOIN donorapplication ON donorapplication.Dono
 $result = mysqli_query($con, $sql);
 $donors = array();
 if ($result && mysqli_num_rows($result) > 0) {
+    // print_r($result);
 
     while ($donorRow = mysqli_fetch_assoc($result)) {
         array_push($donors, $donorRow);
     }
+} else {
+    header("Location:error.php?error=Invalid Request");
 }
+
 
 $sql = "SELECT * FROM donationrequest WHERE `DonationRequestID` = '$id' AND `CreatedBy` = '$username'";
 $result = mysqli_query($con, $sql);
 if ($result && mysqli_num_rows($result) > 0) {
+    // print_r(mysqli_num_rows($result));
     $row = mysqli_fetch_assoc($result);
+} else {
+    header("Location:error.php?error=Invalid Request");
 }
 
 
@@ -204,7 +211,7 @@ if ($result && mysqli_num_rows($result) > 0) {
                             </div>
                         </div>
                         <button class="button mx-0"
-                            onclick="window.location.href='donor_details.php?id=<?php echo base64_encode($donor['Username'] . 'salt'); ?>'">View</button>
+                            onclick="window.location.href='donor_details.php?id=<?php echo base64_encode($donor['Username'] . 'salt'); ?>&request=<?php echo base64_encode($row['DonationRequestID'] . 'salt'); ?>'">View</button>
                     </div>
 
                     <h1 class="mt-2">
