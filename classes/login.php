@@ -12,6 +12,7 @@ if (isset($_POST['submit'])) {
     $result = mysqli_query($con, $sql);
     if (mysqli_num_rows($result) == 1) {
         $_SESSION['username'] = $uname;
+        $_SESSION['role'] = mysqli_fetch_array($result)['Role'];
         header("Location:../dashboard.php");
     } else {
         header("Location:../error.php");

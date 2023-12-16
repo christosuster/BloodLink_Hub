@@ -9,11 +9,13 @@ if (isset($_POST)) {
     $phone = $_POST['PhoneNo'];
     $dob = $_POST['DOB'];
     $address = $_POST['Address'];
+    $gender = $_POST['Gender'];
+    $blood = $_POST['BloodType'];
 
-    $sql = "UPDATE `users` SET `Name`='$name',`PhoneNo`='$phone',`DOB`='$dob',`Address`='$address' WHERE `username` = '$username'";
+    $sql = "UPDATE `users` SET `Name`='$name',`PhoneNo`='$phone',`DOB`='$dob',`Address`='$address', `Gender`='$gender', `BloodType`='$blood' WHERE `username` = '$username'";
     $result = mysqli_query($con, $sql);
     if ($result) {
-        header("Location:../profile.php?uname is wild bro");
+        header("Location:../dashboard.php");
     } else {
         header("Location:../error.php?error=Something went wrong. Please try again later.");
     }

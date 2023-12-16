@@ -1,7 +1,7 @@
 <?php
 session_start();
-if (!isset($_SESSION['username']))
-    header("Location:../");
+if (!isset($_SESSION['username']) || !isset($_SESSION['role']) || $_SESSION['role'] != 'user')
+    header("Location:index.php");
 
 include "components/header.php";
 include "classes/dbconnect.php";

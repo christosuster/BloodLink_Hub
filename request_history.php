@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['username']))
+if (!isset($_SESSION['username']) || !isset($_SESSION['role']) || $_SESSION['role'] != 'user')
     header("Location:../");
 
 include "components/header.php";
@@ -14,7 +14,7 @@ $sql = "SELECT * FROM users INNER JOIN donorapplication ON donorapplication.Dono
 $result = mysqli_query($con, $sql);
 $donors = array();
 if ($result && mysqli_num_rows($result) > 0) {
-    // print_r($result);
+
 
     while ($donorRow = mysqli_fetch_assoc($result)) {
         array_push($donors, $donorRow);
@@ -25,12 +25,17 @@ if ($result && mysqli_num_rows($result) > 0) {
 $sql = "SELECT * FROM donationrequest WHERE `DonationRequestID` = '$id' AND `CreatedBy` = '$username'";
 $result = mysqli_query($con, $sql);
 if ($result && mysqli_num_rows($result) > 0) {
-    // print_r(mysqli_num_rows($result));
+
     $row = mysqli_fetch_assoc($result);
 } else {
     header("Location:error.php?error=Invalid Request");
 }
 
+$deactivateOn = new DateTime($row['DeactivateOn']);
+$timeNow = new DateTime();
+$interval = $timeNow->diff($deactivateOn);
+$difference = $interval->days * 24 + $interval->h;
+$isNegative = $interval->invert;
 
 
 ?>
@@ -42,29 +47,41 @@ if ($result && mysqli_num_rows($result) > 0) {
                 <h1 class="text-2xl">
                     <?php echo $row['Description']; ?>
                 </h1>
-                <div class="flex gap-2 my-3 text-white/70 items-center text-sm">
-                    <h1 class="">Created:</h1>
-                    <h1 class="">
+                <div class=" gap-2 my-3 text-white/70  text-sm">
+                    <h1 class="text-xs text-white/50 arimo font-bold">
+                        Created:
                         <?php
                         $createdOn = new DateTime($row['CreatedOn']);
-                        echo $createdOn->format('M d, Y');
+                        echo $createdOn->format('d M Y h:i A');
                         ?>
+
                     </h1>
+
+                    <?php if (!$isNegative): ?>
+
+                        <div class="text-white/50 arimo font-bold flex my-1">
+                            <i class="fa fa-hourglass-start" aria-hidden="true"></i>
+                            <h1 class="px-2 text-xs">
+                                <?php echo $difference; ?>
+                                Hours Left
+                            </h1>
+                        </div>
+                    <?php endif; ?>
+
+
                 </div>
+
             </div>
             <div class="col-span-1">
                 <form target="frame" action="classes/deactivate.php" method="post">
                     <input type="hidden" name="id" value=<?php echo $row['DonationRequestID']; ?>>
-                    <button type="submit" name="submit" class="button md:w-28 md:text-lg w-24 text-sm font-bold"
-                        id="status">
+                    <button type="submit" name="submit"
+                        class="button bg-red-900 md:w-28 md:text-lg w-24 text-sm font-bold" id="status">
                         <?php
-                        $createdOn = new DateTime($row['CreatedOn']);
-                        $now = new DateTime();
-                        $interval = $now->diff($createdOn);
 
-                        $days = $interval->d;
 
-                        if ($days <= 3 && $row['RequestActive'] == 1) {
+
+                        if (!$isNegative && $row['RequestActive'] == 1) {
                             echo "Active";
                         } else {
                             echo "Inactive";
@@ -208,7 +225,7 @@ if ($result && mysqli_num_rows($result) > 0) {
                                 </h1>
                             </div>
                         </div>
-                        <button class="button mx-0"
+                        <button class=" mx-0 button bg-red-900"
                             onclick="window.location.href='donor_details.php?id=<?php echo base64_encode($donor['Username'] . 'salt'); ?>&request=<?php echo base64_encode($row['DonationRequestID'] . 'salt'); ?>'">View</button>
                     </div>
 

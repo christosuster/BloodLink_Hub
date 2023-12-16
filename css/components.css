@@ -1,3 +1,7 @@
+body {
+  font-family: "Lato", sans-serif;
+}
+
 ::-webkit-scrollbar {
   width: 9px;
   height: 9px;
@@ -35,7 +39,7 @@
   cursor: pointer;
   font-size: 16px;
   margin: 5px auto;
-  transition: all 0.7s ease;
+  transition: all 0.8s ease-in-out;
   border-radius: 20px;
   background: #991b1b;
   box-shadow: 6px 6px 12px #851717, -6px -6px 12px #ad1f1f;
@@ -62,23 +66,43 @@
 .card {
   border-radius: 30px;
   background: #991b1b;
-  box-shadow: 9px 9px 18px #8d1919, -9px -9px 18px #a51d1d;
-  padding: 30px;
+  box-shadow: 12px 12px 28px #841717, -12px -12px 28px #ae1f1f;
+  padding: 20px;
 }
 
 .inner-card {
   border-radius: 30px;
   background: #991b1b;
-  box-shadow: inset 9px 9px 18px #8d1919, inset -9px -9px 18px #a51d1d;
+  box-shadow: inset 9px 9px 18px #861919, inset -9px -9px 18px #ac1b1b;
 }
 
 .tbl > tbody > tr > th {
   text-align: right;
   padding: 2px 12px;
+  width: 50%;
 }
 
 .badge {
-  border-radius: 60px;
+  border-radius: 30px;
   background: #991b1b;
-  box-shadow: inset 6px 6px 12px #851717, inset -6px -6px 12px #ad1f1f;
+  box-shadow: inset 9px 9px 18px #861919, inset -9px -9px 18px #ac1b1b;
+  padding: 5px;
+}
+
+.arimo {
+  font-family: "Arimo", sans-serif;
+}
+
+.item {
+  border-radius: 15px;
+}
+
+.item:hover {
+  background-color: #9c2f2f;
+}
+
+.active {
+  border-color: white !important;
+  background-color: #9c2f2f;
+  padding: 0 5px;
 }

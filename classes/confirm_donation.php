@@ -26,6 +26,10 @@ if (isset($_POST['submit'])) {
 
     $result = mysqli_query($con, $sql);
 
+    $sql = "UPDATE donorapplication set `HasDonated` = 1 where `DonationRequestID` = '$request' and `DonorUsername` = '$id'";
+
+    $result = mysqli_query($con, $sql);
+
 
 
 }

@@ -1,7 +1,7 @@
 <?php
 session_start();
-if (!isset($_SESSION['username']))
-    header("Location:../");
+if (!isset($_SESSION['username']) || !isset($_SESSION['role']) || $_SESSION['role'] != 'user')
+    header("Location:index.php");
 
 include "components/header.php";
 include "classes/dbconnect.php";
@@ -9,7 +9,23 @@ include "classes/dbconnect.php";
 $username = $_SESSION['username'];
 
 
-$sql = "SELECT * FROM `donorapplication` RIGHT JOIN `donationrequest` ON donorapplication.DonationRequestID = donationrequest.DonationRequestID WHERE donationrequest.CreatedBy != '$username' AND donorapplication.DonorUsername IS NULL AND datediff( now(),donationrequest.CreatedOn) <=3 AND donationrequest.RequestActive=1 ORDER BY donationrequest.CreatedOn DESC";
+
+$sql = "SELECT * FROM `users` WHERE Username='$username'";
+$result = mysqli_query($con, $sql);
+if ($result && mysqli_num_rows($result) > 0) {
+    $user = mysqli_fetch_assoc($result);
+
+    if (!$user['PhoneNo'] || !$user['BloodType'] || !$user['Address'] || !$user['DOB'] || !$user['Name'] || !$user['Gender']) {
+        echo "<script>alert('Please complete your profile first!');window.location.href='profile.php';</script>";
+    }
+
+}
+
+
+
+// $sql = "SELECT * FROM `donorapplication` RIGHT JOIN `donationrequest` ON donorapplication.DonationRequestID = donationrequest.DonationRequestID WHERE   TIMEDIFF(donationrequest.DeactivateOn,now()) >=0 AND donationrequest.RequestActive=1 AND donationrequest.CreatedBy != '$username'  AND (donorapplication.DonorUsername != '$username' OR donorapplication.DonorUsername IS NULL) ORDER BY donationrequest.CreatedOn DESC";
+
+$sql = "SELECT * FROM donationrequest WHERE TIMEDIFF(donationrequest.DeactivateOn,now()) >=0 AND donationrequest.RequestActive=1 AND donationrequest.CreatedBy != '$username' AND DonationRequestID NOT IN (SELECT DonationRequestID from donorapplication where DonorUsername = '$username')  ORDER BY donationrequest.CreatedOn DESC";
 
 $result = mysqli_query($con, $sql);
 $donationRequests = array();
@@ -24,6 +40,13 @@ if ($result && mysqli_num_rows($result) > 0) {
 <div class="grid grid-cols-2 gap-10">
 
     <?php foreach ($donationRequests as $idx => $donationRequest): ?>
+        <?php
+        $timeNow = new DateTime();
+        $deactivateOn = new DateTime($donationRequest['DeactivateOn']);
+        $interval = $timeNow->diff($deactivateOn);
+        $difference = $interval->days * 24 + $interval->h;
+        $isNegative = $interval->invert;
+        ?>
 
         <div class="card col-span-2 lg:col-span-1">
             <div class="grid grid-cols-4 gap-2 ">
@@ -31,13 +54,20 @@ if ($result && mysqli_num_rows($result) > 0) {
                     <h1 class="text-2xl">
                         <?php echo $donationRequest['Description']; ?>
                     </h1>
-                    <div class="flex gap-2 my-3 text-white/70 items-center text-sm">
+                    <!-- <div class="flex gap-2 my-3 text-white/70 items-center text-sm">
                         <h1 class="">Created:</h1>
                         <h1 class="">
                             <?php
                             $createdOn = new DateTime($donationRequest['CreatedOn']);
-                            echo $createdOn->format('M d, Y');
+                            echo $createdOn->format('d M Y h:i A');
                             ?>
+                        </h1>
+                    </div> -->
+                    <div class="text-white/50 my-3 arimo font-bold flex">
+                        <i class="fa fa-stopwatch" aria-hidden="true"></i>
+                        <h1 class="px-2 text-xs">Expires in
+                            <?php echo $difference; ?>
+                            Hours
                         </h1>
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['username']))
+if (!isset($_SESSION['username']) || !isset($_SESSION['role']) || $_SESSION['role'] != 'user')
     header("Location:../");
 
 include "components/header.php";
@@ -32,7 +32,7 @@ if ($result && mysqli_num_rows($result) > 0) {
         'RhFactor' => 'N/A',
         'Haemoglobin' => 'N/A',
         'Pulse' => 'N/A',
-        'BP' => 'N/A'
+        'BP' => 'N/A',
     );
 
 }
@@ -61,6 +61,8 @@ if ($result && mysqli_num_rows($result) == 1) {
     $alreadyConfirmed = false;
 }
 
+$verifiedOn = new DateTime($user['VerifiedOn']);
+$verifiedTill = $verifiedOn->add(new DateInterval('P1Y'));
 
 ?>
 
@@ -101,9 +103,13 @@ if ($result && mysqli_num_rows($result) == 1) {
                 </h1>
             </div>
         </div>
-        <h1 class="absolute top-3 right-3 py-2 px-4 badge">
-            Unverified
-        </h1>
+
+        <?php if ($user['VerifiedOn'] != NULL && $verifiedTill > new DateTime()): ?>
+            <i class="fas fa-check-circle absolute top-5 right-5 text-green-600 text-3xl "></i>
+        <?php else: ?>
+            <i class="fas fa-exclamation-circle absolute top-5 right-5 text-yellow-600 text-3xl"></i>
+        <?php endif; ?>
+
     </div>
     <div class="lg:col-span-2 col-span-3 flex flex-col gap-10">
         <div class="card w-full flex flex-col  items-center">

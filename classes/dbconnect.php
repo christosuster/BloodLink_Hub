@@ -9,4 +9,6 @@ $con = mysqli_connect(host, name, pass, dbname);
 if (!$con) {
     header('Location: ../error.php');
 }
+
+date_default_timezone_set('Asia/Dhaka');
 ?>

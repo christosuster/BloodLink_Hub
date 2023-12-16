@@ -12,14 +12,14 @@ if (isset($_POST['submit'])) {
     $result = mysqli_query($con, $sql);
 
     if (mysqli_num_rows($result) > 0) {
-        header("Location:../");
+        header("Location:index.php");
     } else {
         $sql = "INSERT into `users`(`username`, `pass`) 
                 VALUES ('$uname','$pass')";
         $result = mysqli_query($con, $sql);
         if ($result) {
             $_SESSION['username'] = $uname;
-            header("Location:../profile.php");
+            header("Location:../dashboard.php");
         } else {
             echo mysqli_error($con);
         }

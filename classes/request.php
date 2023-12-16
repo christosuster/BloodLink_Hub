@@ -17,9 +17,10 @@ if (isset($_POST)) {
     $Description = $_POST['Description'];
 
     $ExpiryDate = date('Y-m-d', strtotime($NeededOn . ' + 3 days'));
+    $DeactivateOn = date('Y-m-d', strtotime($NeededOn . ' + 3 days'));
 
-    $sql = "INSERT INTO `donationrequest`(`CreatedBy`,`PatientName`, `PatientAge`, `NeededOn`, `HospitalAddress`, `HospitalName`, `Quantity`, `BloodType`, `DonationType`,`CreatedOn`,`Description`,`ExpiryDate`) 
-                VALUES ('$username','$PatientName','$PatientAge','$NeededOn','$HospitalAddress','$HospitalName','$Quantity','$BloodType','$DonationType',NOW(),'$Description','$ExpiryDate')";
+    $sql = "INSERT INTO `donationrequest`(`CreatedBy`,`PatientName`, `PatientAge`, `NeededOn`, `HospitalAddress`, `HospitalName`, `Quantity`, `BloodType`, `DonationType`,`CreatedOn`,`Description`,`ExpiryDate`,`DeactivateOn`) 
+                VALUES ('$username','$PatientName','$PatientAge','$NeededOn','$HospitalAddress','$HospitalName','$Quantity','$BloodType','$DonationType',NOW(),'$Description','$ExpiryDate', DATE_ADD(NOW(), INTERVAL 3 DAY))";
 
     $result = mysqli_query($con, $sql);
     if ($result) {
