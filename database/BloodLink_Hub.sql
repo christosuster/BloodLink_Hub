@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 17, 2023 at 10:14 AM
+-- Generation Time: Dec 17, 2023 at 12:34 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.1.12
 
@@ -42,7 +42,8 @@ CREATE TABLE `bloodinformation` (
 --
 
 INSERT INTO `bloodinformation` (`BloodInfoID`, `Username`, `RhFactor`, `Haemoglobin`, `BP`, `Pulse`, `BloodType`) VALUES
-(14, 'fatema@gmail.com', 'Positive', 34, '120/80', 90, 'A+');
+(14, 'fatema@gmail.com', 'Positive', 34, '120/80', 90, 'A+'),
+(15, 'sharhriar', 'Negative', 65, '110/90', 90, 'AB+');
 
 -- --------------------------------------------------------
 
@@ -67,7 +68,8 @@ CREATE TABLE `diseasehistory` (
 --
 
 INSERT INTO `diseasehistory` (`Username`, `DiseaseHistoryID`, `TB`, `HBV`, `HCV`, `HEV`, `HIV`, `HTV`, `Malaria`) VALUES
-('fatema@gmail.com', 2, 0, 0, 0, 0, 0, 0, 1);
+('fatema@gmail.com', 2, 0, 0, 0, 0, 0, 0, 1),
+('sharhriar', 3, 1, 0, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -92,7 +94,9 @@ CREATE TABLE `donationhistory` (
 
 INSERT INTO `donationhistory` (`DonationHistoryID`, `Username`, `DonationDate`, `BloodType`, `DonationType`, `DonationAmount`, `DonationRequestID`, `HospitalName`) VALUES
 (10, 'fatema@gmail.com', '2023-12-18', 'A+', 'Blood', 200, 79, 'Evercare Hospital'),
-(11, 'chris@gmail.com', '2023-12-18', 'A+', 'Blood', 200, 79, 'Evercare Hospital');
+(11, 'chris@gmail.com', '2023-12-18', 'A+', 'Blood', 200, 79, 'Evercare Hospital'),
+(12, 'junayed@gmail.com', '2023-12-19', 'A+', 'Platelets', 200, 80, 'Bangladesh Specialized Hospital'),
+(13, 'sharhriar', '2023-12-19', 'A+', 'Platelets', 200, 80, 'Bangladesh Specialized Hospital');
 
 -- --------------------------------------------------------
 
@@ -123,7 +127,8 @@ CREATE TABLE `donationrequest` (
 --
 
 INSERT INTO `donationrequest` (`CreatedBy`, `BloodType`, `Quantity`, `CreatedOn`, `HospitalName`, `HospitalAddress`, `DonationRequestID`, `NeededOn`, `PatientName`, `PatientAge`, `DonationType`, `Description`, `RequestActive`, `ExpiryDate`, `DeactivateOn`) VALUES
-('junayed@gmail.com', 'A+', 200, '2023-12-17 14:47:21', 'Evercare Hospital', 'Plot 81, Block-E, Bashundhara Rd, Dhaka 1229', 79, '2023-12-18', 'Jahangir', 58, 'Blood', 'Patient needs blood due to stroke', 0, '2023-12-21', '2023-12-20 14:47:21');
+('junayed@gmail.com', 'A+', 200, '2023-12-17 14:47:21', 'Evercare Hospital', 'Plot 81, Block-E, Bashundhara Rd, Dhaka 1229', 79, '2023-12-18', 'Jahangir', 58, 'Blood', 'Patient needs blood due to stroke', 0, '2023-12-21', '2023-12-20 14:47:21'),
+('fatema@gmail.com', 'A+', 200, '2023-12-17 17:23:12', 'Bangladesh Specialized Hospital', 'Shaymoli, Dhaka', 80, '2023-12-19', 'Akbar', 40, 'Platelets', 'Accident victim needs platelets!', 0, '2023-12-22', '2023-12-20 17:23:12');
 
 -- --------------------------------------------------------
 
@@ -147,7 +152,9 @@ CREATE TABLE `donorapplication` (
 
 INSERT INTO `donorapplication` (`DonorApplicationID`, `IsActive`, `DonorUsername`, `DonationRequestID`, `ApplicationDate`, `AdditionalNotes`, `HasDonated`) VALUES
 (34, 1, 'fatema@gmail.com', 79, '2023-12-17', NULL, 1),
-(36, 1, 'chris@gmail.com', 79, '2023-12-17', NULL, 1);
+(36, 1, 'chris@gmail.com', 79, '2023-12-17', NULL, 1),
+(40, 1, 'sharhriar', 80, '2023-12-17', NULL, 1),
+(41, 1, 'junayed@gmail.com', 80, '2023-12-17', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -169,6 +176,7 @@ CREATE TABLE `hospital` (
 
 INSERT INTO `hospital` (`HospitalID`, `Name`, `Location`, `City`, `Division`) VALUES
 ('labaid', 'LABAID Diagnostic', 'House # 01 & 03, Road-04, Dhanmondi', 'Dhaka', 'Dhaka'),
+('PMC', 'Popular Medical Center', 'Dhanmondi 32', 'Dhaka', 'Dhaka'),
 ('SHL', 'Square Hospitals Ltd', '18 Bir Uttam Qazi Nuruzzaman Sarak', 'Panthapath', 'Dhaka');
 
 -- --------------------------------------------------------
@@ -202,9 +210,11 @@ INSERT INTO `users` (`Username`, `Pass`, `PhoneNo`, `Role`, `BloodType`, `DOB`, 
 ('admin1@labaid', '827ccb0eea8a706c4c34a16891f84e7b', NULL, 'admin', NULL, NULL, 0, 0, 'labaid', 'LABAID Admin 1', NULL, NULL, NULL, NULL),
 ('admin1@SHL', '827ccb0eea8a706c4c34a16891f84e7b', '01546589457', 'admin', NULL, NULL, 0, 0, 'SHL', 'SHL Administrator 1', NULL, NULL, NULL, NULL),
 ('admin2@SHL', '827ccb0eea8a706c4c34a16891f84e7b', NULL, 'admin', NULL, NULL, 0, 0, 'SHL', 'SHL Administrator 2', NULL, NULL, NULL, NULL),
+('admin@PMC', '827ccb0eea8a706c4c34a16891f84e7b', '01654987523', 'admin', NULL, NULL, 0, 0, 'PMC', 'PMC Admin 1', NULL, NULL, NULL, NULL),
 ('chris@gmail.com', '827ccb0eea8a706c4c34a16891f84e7b', '01459874216', 'user', 'O-', '1995-08-26', 0, 0, NULL, 'Chris', 'Mohakhali, Dhaka', 'Male', NULL, NULL),
 ('fatema@gmail.com', '827ccb0eea8a706c4c34a16891f84e7b', '01752418965', 'user', 'A+', '1990-03-25', 0, 0, NULL, 'Fatema', 'Mohammadpur, Dhaka', 'Female', '2023-12-17', 'SHL'),
 ('junayed@gmail.com', '827ccb0eea8a706c4c34a16891f84e7b', '01245876549', 'user', 'B-', '1990-08-06', 0, 0, NULL, 'Junayed Hossain', 'Mirpur, Dhaka', 'Male', NULL, NULL),
+('sharhriar', '827ccb0eea8a706c4c34a16891f84e7b', '01845795623', 'user', 'AB+', '2000-06-02', 0, 0, NULL, 'Saif Shahriar', 'Tejgaon, Dhaka', 'Male', '2023-12-17', 'PMC'),
 ('thecreator', '827ccb0eea8a706c4c34a16891f84e7b', '01754268549', 'superuser', NULL, NULL, 0, 0, NULL, 'The Creator', NULL, NULL, NULL, NULL);
 
 --
@@ -268,31 +278,31 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `bloodinformation`
 --
 ALTER TABLE `bloodinformation`
-  MODIFY `BloodInfoID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `BloodInfoID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `diseasehistory`
 --
 ALTER TABLE `diseasehistory`
-  MODIFY `DiseaseHistoryID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `DiseaseHistoryID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `donationhistory`
 --
 ALTER TABLE `donationhistory`
-  MODIFY `DonationHistoryID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `DonationHistoryID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `donationrequest`
 --
 ALTER TABLE `donationrequest`
-  MODIFY `DonationRequestID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
+  MODIFY `DonationRequestID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
 
 --
 -- AUTO_INCREMENT for table `donorapplication`
 --
 ALTER TABLE `donorapplication`
-  MODIFY `DonorApplicationID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `DonorApplicationID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- Constraints for dumped tables

@@ -125,7 +125,7 @@ $verifiedTill = $verifiedOn->add(new DateInterval('P1Y'));
                     </tbody>
                 </table>
             </div>
-            <button class="button bg-red-900/50 px-8">Edit Profile</button>
+            <a href="profile.php" class="button bg-red-900/50 px-8">Edit Profile</a>
         </div>
 
     </div>

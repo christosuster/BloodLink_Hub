@@ -87,9 +87,10 @@ if ($result && mysqli_num_rows($result) > 0) {
                             <?php echo $admin['HospitalID'] ?>
                         </td>
                         <td class="py-3">
-                            <button>
-                                <i class="fas fa-edit text-2xl text-yellow-500 hover:text-yellow-700"></i>
-                            </button>
+
+                            <button class=""
+                                onclick="window.location.href='change_pass.php?id=<?php echo base64_encode($admin['Username'] . 'salt'); ?>&code=<?php echo base64_encode($admin['HospitalID'] . 'salt'); ?>'"><i
+                                    class="fas fa-edit text-2xl text-yellow-500 hover:text-yellow-700"></i></button>
                         </td>
                     </tr>
                 <?php endforeach; ?>

@@ -91,7 +91,7 @@ if (mysqli_num_rows($result) == 1) {
                             echo "active" ?>">
                                 Hospitals
                             </a>
-                            <a href="hospital_admins.php" class="block px-3 lg:inline-block lg:mt-0 py-6 border-b-2 border-transparent hover:bg-red-400/10 <?php if ($_SERVER['PHP_SELF'] == "/BloodLink_Hub/add_hospital.php")
+                            <a href="hospital_admins.php" class="block px-3 lg:inline-block lg:mt-0 py-6 border-b-2 border-transparent hover:bg-red-400/10 <?php if ($_SERVER['PHP_SELF'] == "/BloodLink_Hub/hospital_admins.php")
                             echo "active" ?>">
                                 Admins
                             </a>
