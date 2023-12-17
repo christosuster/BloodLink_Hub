@@ -1,13 +1,8 @@
 <?php
-session_start();
-if (!isset($_SESSION['username']) || !isset($_SESSION['role']) || $_SESSION['role'] != 'user')
-    header("Location:../");
-
 include "components/header.php";
-include "classes/dbconnect.php";
 
-
-$username = $_SESSION['username'];
+if ($_SESSION['role'] != 'user' && $_SESSION['role'] != 'admin')
+    header("Location:index.php");
 
 $raw_id = base64_decode($_GET['id']);
 $id = preg_replace(sprintf('/%s/', 'salt'), '', $raw_id);
@@ -64,6 +59,16 @@ if ($result && mysqli_num_rows($result) == 1) {
 $verifiedOn = new DateTime($user['VerifiedOn']);
 $verifiedTill = $verifiedOn->add(new DateInterval('P1Y'));
 
+$sql = "SELECT * FROM donationhistory WHERE `Username` = '$id'";
+$result = mysqli_query($con, $sql);
+$donationHistory = array();
+if ($result && mysqli_num_rows($result) > 0) {
+
+    while ($row = mysqli_fetch_assoc($result)) {
+        array_push($donationHistory, $row);
+    }
+}
+
 ?>
 
 <div class=" grid grid-cols-3 gap-10">
@@ -99,7 +104,7 @@ $verifiedTill = $verifiedOn->add(new DateInterval('P1Y'));
             <div class="my-4">
                 <h1 class="text-xs  text-white/70 leading-none">DONATIONS MADE</h1>
                 <h1 class="text-xl leading-none">
-                    2
+                    <?php echo count($donationHistory) ?>
                 </h1>
             </div>
         </div>
@@ -157,43 +162,92 @@ $verifiedTill = $verifiedOn->add(new DateInterval('P1Y'));
                     <tr>
                         <th>Hepatitis B Virus:</th>
                         <td>
-                            <?php echo $disease['HBV'] ?>
+                            <?php if (isset($disease['HBV']) && $disease['HBV'] == 1) {
+                                echo 'Positive';
+                            } elseif (isset($disease['HBV']) && $disease['HBV'] == 0) {
+                                echo 'Negative';
+                            } else {
+                                echo 'N/A';
+
+                            } ?>
                         </td>
                     </tr>
                     <tr>
                         <th>HIV:</th>
                         <td>
-                            <?php echo $disease['HIV'] ?>
+                            <?php if (isset($disease['HIV']) && $disease['HIV'] == 1) {
+                                echo 'Positive';
+                            } elseif (isset($disease['HIV']) && $disease['HIV'] == 0) {
+                                echo 'Negative';
+                            } else {
+                                echo 'N/A';
+
+                            } ?>
                         </td>
                     </tr>
                     <tr>
                         <th>Hepatitis C Virus:</th>
                         <td>
-                            <?php echo $disease['HCV'] ?> (g/dl)
+                            <?php if (isset($disease['HCV']) && $disease['HCV'] == 1) {
+                                echo 'Positive';
+                            } elseif (isset($disease['HCV']) && $disease['HCV'] == 0) {
+                                echo 'Negative';
+                            } else {
+                                echo 'N/A';
+
+                            } ?>
                         </td>
                     </tr>
                     <tr>
                         <th>Hepatitis E Virus:</th>
                         <td>
-                            <?php echo $disease['HEV'] ?> bpm
+                            <?php if (isset($disease['HEV']) && $disease['HEV'] == 1) {
+                                echo 'Positive';
+                            } elseif (isset($disease['HEV']) && $disease['HEV'] == 0) {
+                                echo 'Negative';
+                            } else {
+                                echo 'N/A';
+
+                            } ?>
                         </td>
                     </tr>
                     <tr>
                         <th>Human T-lymphotropic Virus:</th>
                         <td>
-                            <?php echo $disease['HTV'] ?> mmHg
+                            <?php if (isset($disease['HTV']) && $disease['HTV'] == 1) {
+                                echo 'Positive';
+                            } elseif (isset($disease['HTV']) && $disease['HTV'] == 0) {
+                                echo 'Negative';
+                            } else {
+                                echo 'N/A';
+
+                            } ?>
                         </td>
                     </tr>
                     <tr>
                         <th>Malaria:</th>
                         <td>
-                            <?php echo $disease['Malaria'] ?> mmHg
+                            <?php if (isset($disease['Malaria']) && $disease['Malaria'] == 1) {
+                                echo 'Positive';
+                            } elseif (isset($disease['Malaria']) && $disease['Malaria'] == 0) {
+                                echo 'Negative';
+                            } else {
+                                echo 'N/A';
+
+                            } ?>
                         </td>
                     </tr>
                     <tr>
                         <th>Active Tuberculosis:</th>
                         <td>
-                            <?php echo $disease['TB'] ?> mmHg
+                            <?php if (isset($disease['TB']) && $disease['TB'] == 1) {
+                                echo 'Positive';
+                            } elseif (isset($disease['TB']) && $disease['TB'] == 0) {
+                                echo 'Negative';
+                            } else {
+                                echo 'N/A';
+
+                            } ?>
                         </td>
                     </tr>
 
@@ -201,7 +255,7 @@ $verifiedTill = $verifiedOn->add(new DateInterval('P1Y'));
             </table>
         </div>
     </div>
-    <?php if (!$alreadyConfirmed): ?>
+    <?php if (!$alreadyConfirmed && $role == 'user'): ?>
         <div class="col-span-3 flex justify-center">
             <form target="frame" action="classes/confirm_donation.php" method="post">
                 <input type="hidden" name="request" value=<?php echo $request; ?>>

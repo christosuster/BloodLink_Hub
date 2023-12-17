@@ -1,12 +1,8 @@
 <?php
-session_start();
-if (!isset($_SESSION['username']) || !isset($_SESSION['role']) || $_SESSION['role'] != 'user')
-    header("Location:index.php");
-
 include "components/header.php";
-include "classes/dbconnect.php";
 
-$username = $_SESSION['username'];
+if ($_SESSION['role'] != 'user')
+    header("Location:index.php");
 
 
 
@@ -23,7 +19,6 @@ if ($result && mysqli_num_rows($result) > 0) {
 
 
 
-// $sql = "SELECT * FROM `donorapplication` RIGHT JOIN `donationrequest` ON donorapplication.DonationRequestID = donationrequest.DonationRequestID WHERE   TIMEDIFF(donationrequest.DeactivateOn,now()) >=0 AND donationrequest.RequestActive=1 AND donationrequest.CreatedBy != '$username'  AND (donorapplication.DonorUsername != '$username' OR donorapplication.DonorUsername IS NULL) ORDER BY donationrequest.CreatedOn DESC";
 
 $sql = "SELECT * FROM donationrequest WHERE TIMEDIFF(donationrequest.DeactivateOn,now()) >=0 AND donationrequest.RequestActive=1 AND donationrequest.CreatedBy != '$username' AND DonationRequestID NOT IN (SELECT DonationRequestID from donorapplication where DonorUsername = '$username')  ORDER BY donationrequest.CreatedOn DESC";
 
@@ -203,7 +198,7 @@ if ($result && mysqli_num_rows($result) > 0) {
 <script>
     function handleDonate(idx) {
         console.log(idx);
-        document.getElementById(`btn${idx}`).innerHTML = "Donated";
+        document.getElementById(`btn${idx}`).innerHTML = "Applied";
         document.getElementById(`btn${idx}`).classList.add("inactive");
         document.getElementById(`btn${idx}`).classList.remove("bg-red-500");
         document.getElementById(`btn${idx}`).classList.remove("button");

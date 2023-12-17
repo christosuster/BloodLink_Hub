@@ -1,12 +1,8 @@
 <?php
-session_start();
-if (!isset($_SESSION['username']) || !isset($_SESSION['role']) || $_SESSION['role'] != 'user')
-    header("Location:../");
-
 include "components/header.php";
-include "classes/dbconnect.php";
 
-$username = $_SESSION['username'];
+if ($_SESSION['role'] != 'user')
+    header("Location:index.php");
 
 $id = $_GET['id'];
 
@@ -207,11 +203,11 @@ $isNegative = $interval->invert;
     </div>
     <div class="col-span-5 lg:col-span-2 card">
         <h1 class="text-3xl text-center mb-10">Interested Donors</h1>
-        <div class="max-h-[200px]">
+        <div class="max-h-[220px] overflow-y-auto">
             <?php foreach ($donors as $donor): ?>
 
-                <div class="my-3 p-4 rounded-2xl hover:bg-white/5 hover:shadow-lg">
-                    <div class="flex justify-between w-full mb-2">
+                <div class="my-3 px-4 py-2 item">
+                    <div class="flex justify-between w-full">
                         <div class="flex gap-2 items-center">
                             <h1 class="text-2xl font-bold">
                                 <?php echo $donor['BloodType']; ?>
@@ -229,9 +225,7 @@ $isNegative = $interval->invert;
                             onclick="window.location.href='donor_details.php?id=<?php echo base64_encode($donor['Username'] . 'salt'); ?>&request=<?php echo base64_encode($row['DonationRequestID'] . 'salt'); ?>'">View</button>
                     </div>
 
-                    <h1 class="mt-2">
-                        <?php echo $donor['AdditionalNotes'] ?>
-                    </h1>
+
                 </div>
             <?php endforeach; ?>
 

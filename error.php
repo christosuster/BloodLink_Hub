@@ -1,5 +1,4 @@
 <?php
-session_start();
 include "components/header.php";
 
 isset($_GET['error']) ? $error = $_GET['error'] : header("Location:dashboard.php");

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 11, 2023 at 10:28 PM
+-- Generation Time: Dec 17, 2023 at 10:14 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.1.12
 
@@ -33,15 +33,16 @@ CREATE TABLE `bloodinformation` (
   `RhFactor` varchar(10) DEFAULT NULL,
   `Haemoglobin` float DEFAULT NULL,
   `BP` varchar(10) DEFAULT NULL,
-  `Pulse` int(11) DEFAULT NULL
+  `Pulse` int(11) DEFAULT NULL,
+  `BloodType` varchar(3) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `bloodinformation`
 --
 
-INSERT INTO `bloodinformation` (`BloodInfoID`, `Username`, `RhFactor`, `Haemoglobin`, `BP`, `Pulse`) VALUES
-(1, 'chris@gmail.com', 'Positive', 15, '90', 120);
+INSERT INTO `bloodinformation` (`BloodInfoID`, `Username`, `RhFactor`, `Haemoglobin`, `BP`, `Pulse`, `BloodType`) VALUES
+(14, 'fatema@gmail.com', 'Positive', 34, '120/80', 90, 'A+');
 
 -- --------------------------------------------------------
 
@@ -52,10 +53,21 @@ INSERT INTO `bloodinformation` (`BloodInfoID`, `Username`, `RhFactor`, `Haemoglo
 CREATE TABLE `diseasehistory` (
   `Username` varchar(32) DEFAULT NULL,
   `DiseaseHistoryID` int(11) NOT NULL,
-  `AIDS` tinyint(1) DEFAULT NULL,
   `TB` tinyint(1) DEFAULT NULL,
-  `Others` varchar(300) DEFAULT NULL
+  `HBV` tinyint(1) DEFAULT NULL,
+  `HCV` tinyint(1) DEFAULT NULL,
+  `HEV` tinyint(1) DEFAULT NULL,
+  `HIV` tinyint(1) DEFAULT NULL,
+  `HTV` tinyint(1) DEFAULT NULL,
+  `Malaria` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `diseasehistory`
+--
+
+INSERT INTO `diseasehistory` (`Username`, `DiseaseHistoryID`, `TB`, `HBV`, `HCV`, `HEV`, `HIV`, `HTV`, `Malaria`) VALUES
+('fatema@gmail.com', 2, 0, 0, 0, 0, 0, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -79,7 +91,8 @@ CREATE TABLE `donationhistory` (
 --
 
 INSERT INTO `donationhistory` (`DonationHistoryID`, `Username`, `DonationDate`, `BloodType`, `DonationType`, `DonationAmount`, `DonationRequestID`, `HospitalName`) VALUES
-(3, 'chris@gmail.com', '2023-12-14', 'O-', 'Red Cells', 1000, 68, NULL);
+(10, 'fatema@gmail.com', '2023-12-18', 'A+', 'Blood', 200, 79, 'Evercare Hospital'),
+(11, 'chris@gmail.com', '2023-12-18', 'A+', 'Blood', 200, 79, 'Evercare Hospital');
 
 -- --------------------------------------------------------
 
@@ -91,7 +104,7 @@ CREATE TABLE `donationrequest` (
   `CreatedBy` varchar(32) DEFAULT NULL,
   `BloodType` varchar(3) DEFAULT NULL,
   `Quantity` int(11) DEFAULT NULL,
-  `CreatedOn` date DEFAULT NULL,
+  `CreatedOn` datetime DEFAULT NULL,
   `HospitalName` varchar(100) DEFAULT NULL,
   `HospitalAddress` varchar(200) DEFAULT NULL,
   `DonationRequestID` int(11) NOT NULL,
@@ -101,22 +114,16 @@ CREATE TABLE `donationrequest` (
   `DonationType` varchar(32) DEFAULT NULL,
   `Description` varchar(255) DEFAULT NULL,
   `RequestActive` tinyint(1) DEFAULT 1,
-  `ExpiryDate` date DEFAULT NULL
+  `ExpiryDate` date DEFAULT NULL,
+  `DeactivateOn` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `donationrequest`
 --
 
-INSERT INTO `donationrequest` (`CreatedBy`, `BloodType`, `Quantity`, `CreatedOn`, `HospitalName`, `HospitalAddress`, `DonationRequestID`, `NeededOn`, `PatientName`, `PatientAge`, `DonationType`, `Description`, `RequestActive`, `ExpiryDate`) VALUES
-('chris2@gmail.com', 'A+', 300, '2023-12-05', 'Square', 'Shaymoli', 64, '2023-12-18', 'Chris', 12, 'Blood', 'Gimme blood rawr', 1, '2023-12-16'),
-('chris2@gmail.com', 'AB+', 100, '2023-12-09', 'Apollo', 'Dhaka', 65, '2023-12-12', 'Patema', 13, 'Platelets', 'Help need blood', 1, '2023-12-16'),
-('Christos Uster', 'B+', 200, '2023-12-10', 'Square Hospital', 'Kajipara, Mirpurpur, Dhaka', 66, '2023-12-13', 'Junayed Hossain', 15, 'Plasma', 'Help help please', 1, '2023-12-16'),
-('test1', 'A+', 400, '2023-12-10', 'Al Razhi', 'Farmgate, Dhaka, 1215', 67, '2023-12-12', 'Md Sheikh Russel', 45, 'Blood', 'Need plasma quick', 1, '2023-12-16'),
-('promy@gmail.com', 'O-', 1000, '2023-12-10', 'Holy Family', 'Kakrail, Dhaka', 68, '2023-12-14', 'Mathew Roy', 56, 'Red Cells', 'Red cells needed for accident victim', 1, '2023-12-10'),
-('promy@gmail.com', 'A+', 500, '2023-12-10', 'TEST HOSPITAL', 'TEST ADDRESS', 69, '2023-12-12', 'TEST PATIENT', 43, 'Blood', 'THIS IS A TEST', 1, '2023-12-16'),
-('promy@gmail.com', 'AB+', 1000, '2023-12-11', 'Ali Baba Hospital', 'China', 70, '2023-12-14', 'Aladin', 24, 'Platelets', 'Plz help!!!', 1, '2023-12-16'),
-('promy@gmail.com', 'A+', 500, '2023-12-11', 'TEST 2', 'TEST 2', 71, '2023-12-13', 'TEST 2', 55, 'Blood', 'TEST 2', 1, '2023-12-16');
+INSERT INTO `donationrequest` (`CreatedBy`, `BloodType`, `Quantity`, `CreatedOn`, `HospitalName`, `HospitalAddress`, `DonationRequestID`, `NeededOn`, `PatientName`, `PatientAge`, `DonationType`, `Description`, `RequestActive`, `ExpiryDate`, `DeactivateOn`) VALUES
+('junayed@gmail.com', 'A+', 200, '2023-12-17 14:47:21', 'Evercare Hospital', 'Plot 81, Block-E, Bashundhara Rd, Dhaka 1229', 79, '2023-12-18', 'Jahangir', 58, 'Blood', 'Patient needs blood due to stroke', 0, '2023-12-21', '2023-12-20 14:47:21');
 
 -- --------------------------------------------------------
 
@@ -130,17 +137,17 @@ CREATE TABLE `donorapplication` (
   `DonorUsername` varchar(32) DEFAULT NULL,
   `DonationRequestID` int(11) DEFAULT NULL,
   `ApplicationDate` date DEFAULT NULL,
-  `AdditionalNotes` varchar(500) DEFAULT NULL
+  `AdditionalNotes` varchar(500) DEFAULT NULL,
+  `HasDonated` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `donorapplication`
 --
 
-INSERT INTO `donorapplication` (`DonorApplicationID`, `IsActive`, `DonorUsername`, `DonationRequestID`, `ApplicationDate`, `AdditionalNotes`) VALUES
-(16, 1, 'chris@gmail.com', 69, NULL, NULL),
-(19, 1, 'chris@gmail.com', 68, NULL, NULL),
-(22, 1, 'promy@gmail.com', 67, NULL, NULL);
+INSERT INTO `donorapplication` (`DonorApplicationID`, `IsActive`, `DonorUsername`, `DonationRequestID`, `ApplicationDate`, `AdditionalNotes`, `HasDonated`) VALUES
+(34, 1, 'fatema@gmail.com', 79, '2023-12-17', NULL, 1),
+(36, 1, 'chris@gmail.com', 79, '2023-12-17', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -151,8 +158,18 @@ INSERT INTO `donorapplication` (`DonorApplicationID`, `IsActive`, `DonorUsername
 CREATE TABLE `hospital` (
   `HospitalID` varchar(20) NOT NULL,
   `Name` varchar(100) DEFAULT NULL,
-  `Location` varchar(200) DEFAULT NULL
+  `Location` varchar(200) DEFAULT NULL,
+  `City` varchar(20) DEFAULT NULL,
+  `Division` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `hospital`
+--
+
+INSERT INTO `hospital` (`HospitalID`, `Name`, `Location`, `City`, `Division`) VALUES
+('labaid', 'LABAID Diagnostic', 'House # 01 & 03, Road-04, Dhanmondi', 'Dhaka', 'Dhaka'),
+('SHL', 'Square Hospitals Ltd', '18 Bir Uttam Qazi Nuruzzaman Sarak', 'Panthapath', 'Dhaka');
 
 -- --------------------------------------------------------
 
@@ -173,21 +190,22 @@ CREATE TABLE `users` (
   `Name` varchar(32) DEFAULT NULL,
   `Address` varchar(255) DEFAULT NULL,
   `Gender` varchar(7) DEFAULT NULL,
-  `VerifiedOn` date DEFAULT NULL
+  `VerifiedOn` date DEFAULT NULL,
+  `VerifiedFrom` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`Username`, `Pass`, `PhoneNo`, `Role`, `BloodType`, `DOB`, `NumberOfDonations`, `isDonor`, `HospitalID`, `Name`, `Address`, `Gender`, `VerifiedOn`) VALUES
-('chris2@gmail.com', '827ccb0eea8a706c4c34a16891f84e7b', '01725463259', 'user', NULL, '2021-01-06', 0, 0, NULL, 'Chris2', 'Dhaka', NULL, NULL),
-('chris5@gmail.com', '827ccb0eea8a706c4c34a16891f84e7b', NULL, 'user', NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL),
-('chris@gmail.com', '827ccb0eea8a706c4c34a16891f84e7b', '01847524569', 'user', 'B+', '2013-12-18', 0, 0, NULL, 'Chris', 'Mohammadpur, Tejgaon, Dhaka, 1217', NULL, NULL),
-('Christos Uster', '827ccb0eea8a706c4c34a16891f84e7b', '01754289654', 'user', NULL, '1990-12-14', 0, 0, NULL, 'Christos Uster Biswas', 'Monipuripara, Dhaka, Bangladesh, 1215', NULL, NULL),
-('fatema@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', NULL, 'user', NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL),
-('promy@gmail.com', '827ccb0eea8a706c4c34a16891f84e7b', '01658974236', 'user', NULL, '2000-12-07', 0, 0, NULL, 'Fatema Promy', 'Shikdar, Mohammadpur, Dhaka', NULL, NULL),
-('test1', '827ccb0eea8a706c4c34a16891f84e7b', '01542865749', 'user', NULL, '2001-12-08', 0, 0, NULL, 'Test User 1', 'Dhaka, Bangladesh', NULL, NULL);
+INSERT INTO `users` (`Username`, `Pass`, `PhoneNo`, `Role`, `BloodType`, `DOB`, `NumberOfDonations`, `isDonor`, `HospitalID`, `Name`, `Address`, `Gender`, `VerifiedOn`, `VerifiedFrom`) VALUES
+('admin1@labaid', '827ccb0eea8a706c4c34a16891f84e7b', NULL, 'admin', NULL, NULL, 0, 0, 'labaid', 'LABAID Admin 1', NULL, NULL, NULL, NULL),
+('admin1@SHL', '827ccb0eea8a706c4c34a16891f84e7b', '01546589457', 'admin', NULL, NULL, 0, 0, 'SHL', 'SHL Administrator 1', NULL, NULL, NULL, NULL),
+('admin2@SHL', '827ccb0eea8a706c4c34a16891f84e7b', NULL, 'admin', NULL, NULL, 0, 0, 'SHL', 'SHL Administrator 2', NULL, NULL, NULL, NULL),
+('chris@gmail.com', '827ccb0eea8a706c4c34a16891f84e7b', '01459874216', 'user', 'O-', '1995-08-26', 0, 0, NULL, 'Chris', 'Mohakhali, Dhaka', 'Male', NULL, NULL),
+('fatema@gmail.com', '827ccb0eea8a706c4c34a16891f84e7b', '01752418965', 'user', 'A+', '1990-03-25', 0, 0, NULL, 'Fatema', 'Mohammadpur, Dhaka', 'Female', '2023-12-17', 'SHL'),
+('junayed@gmail.com', '827ccb0eea8a706c4c34a16891f84e7b', '01245876549', 'user', 'B-', '1990-08-06', 0, 0, NULL, 'Junayed Hossain', 'Mirpur, Dhaka', 'Male', NULL, NULL),
+('thecreator', '827ccb0eea8a706c4c34a16891f84e7b', '01754268549', 'superuser', NULL, NULL, 0, 0, NULL, 'The Creator', NULL, NULL, NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -250,31 +268,31 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `bloodinformation`
 --
 ALTER TABLE `bloodinformation`
-  MODIFY `BloodInfoID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `BloodInfoID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `diseasehistory`
 --
 ALTER TABLE `diseasehistory`
-  MODIFY `DiseaseHistoryID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `DiseaseHistoryID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `donationhistory`
 --
 ALTER TABLE `donationhistory`
-  MODIFY `DonationHistoryID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `DonationHistoryID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `donationrequest`
 --
 ALTER TABLE `donationrequest`
-  MODIFY `DonationRequestID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+  MODIFY `DonationRequestID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
 
 --
 -- AUTO_INCREMENT for table `donorapplication`
 --
 ALTER TABLE `donorapplication`
-  MODIFY `DonorApplicationID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `DonorApplicationID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- Constraints for dumped tables

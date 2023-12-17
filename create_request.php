@@ -1,13 +1,8 @@
 <?php
-session_start();
-if (!isset($_SESSION['username']) || !isset($_SESSION['role']) || $_SESSION['role'] != 'user')
-    header("Location:index.php");
-
 include "components/header.php";
-include "classes/dbconnect.php";
 
-
-$username = $_SESSION['username'];
+if ($_SESSION['role'] != 'user')
+    header("Location:index.php");
 
 
 $sql = "SELECT * FROM users WHERE `username` = '$username'";
